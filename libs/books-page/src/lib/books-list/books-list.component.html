@@ -3,28 +3,44 @@
     <mat-card-title>
       <h1>Books</h1>
     </mat-card-title>
+
+    <mat-button-toggle-group
+      [value]="booksListStore.sortProp$ | async"
+      (change)="booksListStore.setSortProp($event.value)"
+      aria-label="Sort By"
+    >
+      <mat-button-toggle value="name">
+        <mat-icon>sort_by_alpha</mat-icon>
+      </mat-button-toggle>
+      <mat-button-toggle value="earnings">
+        <mat-icon>attach_money</mat-icon>
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+
+    <mat-button-toggle-group
+      [value]="booksListStore.sortOrder$ | async"
+      (change)="booksListStore.setSortOrder($event.value)"
+      aria-label="Sort Order"
+    >
+      <mat-button-toggle value="asc">
+        <mat-icon>arrow_upward</mat-icon>
+      </mat-button-toggle>
+      <mat-button-toggle value="dsc">
+        <mat-icon>arrow_downward</mat-icon>
+      </mat-button-toggle>
+    </mat-button-toggle-group>
   </mat-card-header>
+
   <mat-card-content>
     <mat-list>
-      <mat-list-item
-        *ngFor="let book of books"
-        (click)="select.emit(book)"
-        class="record"
-      >
+      <mat-list-item *ngFor="let book of booksListStore.sortedBooks$ | async">
         <h3 mat-line>{{ book.name }}</h3>
-        <p mat-line>
-          {{ book.description }}
-        </p>
-        <p>
-          {{ book.earnings | currency }}
-        </p>
-        <button
-          *ngIf="!readonly"
-          mat-icon-button
-          (click)="delete.emit(book); $event.stopImmediatePropagation()"
-        >
-          <mat-icon>close</mat-icon>
-        </button>
+        <p mat-line>{{ book.earnings | currency }}</p>
+        <bco-book-actions
+          [isOnSmallDevice]="booksListStore.isOnSmallDevice$ | async"
+          (select)="booksListStore.selectBook(book)"
+          (delete)="booksListStore.deleteBook(book)"
+        ></bco-book-actions>
       </mat-list-item>
     </mat-list>
   </mat-card-content>

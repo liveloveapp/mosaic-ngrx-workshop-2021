@@ -2,12 +2,7 @@
   <div class="col-50">
     <bco-books-total [total]="total$ | async"> </bco-books-total>
 
-    <bco-books-list
-      [books]="books$ | async"
-      (select)="onSelect($event)"
-      (delete)="onDelete($event)"
-    >
-    </bco-books-list>
+    <bco-books-list></bco-books-list>
   </div>
 
   <bco-book-detail

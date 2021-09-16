@@ -5,3 +5,27 @@ mat-list-item:not(:first-of-type) {
 .symbol {
   color: #777;
 }
+
+mat-list-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+mat-card-header {
+  position: relative;
+}
+
+mat-button-toggle-group {
+  transform: scale(0.7);
+  position: absolute;
+  top: -8px;
+}
+
+mat-button-toggle-group:first-of-type {
+  right: 92px;
+}
+
+mat-button-toggle-group:last-of-type {
+  right: -18px;
+}

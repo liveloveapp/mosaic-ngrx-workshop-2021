@@ -1,0 +1,18 @@
+<ng-container *ngIf="!isOnSmallDevice; else showCompactActions">
+  <button mat-icon-button (click)="select.emit()">
+    <mat-icon>edit</mat-icon>
+  </button>
+  <button mat-icon-button (click)="delete.emit()">
+    <mat-icon>delete</mat-icon>
+  </button>
+</ng-container>
+
+<ng-template #showCompactActions>
+  <button mat-icon-button [matMenuTriggerFor]="menu">
+    <mat-icon>more_vert</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="select.emit()">Edit</button>
+    <button mat-menu-item (click)="delete.emit()">Delete</button>
+  </mat-menu>
+</ng-template>

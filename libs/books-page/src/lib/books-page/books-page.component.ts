@@ -15,22 +15,16 @@ import {
   styleUrls: ['./books-page.component.scss'],
 })
 export class BooksPageComponent implements OnInit {
-  books$: Observable<BookModel[]>;
   currentBook$: Observable<BookModel | null>;
   total$: Observable<number>;
 
   constructor(private store: Store) {
-    this.books$ = store.select(selectAllBooks);
     this.currentBook$ = store.select(selectActiveBook);
     this.total$ = store.select(selectBooksEarningsTotals);
   }
 
   ngOnInit() {
     this.store.dispatch(BooksPageActions.enter());
-  }
-
-  onSelect(book: BookModel) {
-    this.store.dispatch(BooksPageActions.selectBook({ bookId: book.id }));
   }
 
   onCancel() {
@@ -57,9 +51,5 @@ export class BooksPageComponent implements OnInit {
     this.store.dispatch(
       BooksPageActions.updateBook({ bookId: book.id, changes: book })
     );
-  }
-
-  onDelete(book: BookModel) {
-    this.store.dispatch(BooksPageActions.deleteBook({ bookId: book.id }));
   }
 }
