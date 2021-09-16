@@ -6,8 +6,9 @@ import { BooksListStore } from './books-list.store';
   selector: 'bco-books-list',
   templateUrl: './books-list.component.html',
   styleUrls: ['./books-list.component.scss'],
-  providers: [BooksListStore],
 })
 export class BooksListComponent {
-  constructor(readonly booksListStore: BooksListStore) {}
+  @Input() books: BookModel[] | null = [];
+  @Output() select = new EventEmitter();
+  @Output() delete = new EventEmitter();
 }

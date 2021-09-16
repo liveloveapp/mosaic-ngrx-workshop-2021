@@ -15,10 +15,12 @@ import {
   styleUrls: ['./books-page.component.scss'],
 })
 export class BooksPageComponent implements OnInit {
+  books$: Observable<BookModel[]>;
   currentBook$: Observable<BookModel | null>;
   total$: Observable<number>;
 
   constructor(private store: Store) {
+    this.books$ = store.select(selectAllBooks);
     this.currentBook$ = store.select(selectActiveBook);
     this.total$ = store.select(selectBooksEarningsTotals);
   }
@@ -33,6 +35,14 @@ export class BooksPageComponent implements OnInit {
 
   removeSelectedBook() {
     this.store.dispatch(BooksPageActions.clearSelectedBook());
+  }
+
+  onSelectBook(book: BookModel) {
+    this.store.dispatch(BooksPageActions.selectBook({ bookId: book.id }));
+  }
+
+  onDeleteBook(book: BookModel) {
+    this.store.dispatch(BooksPageActions.deleteBook({ bookId: book.id }));
   }
 
   onSave(book: BookRequiredProps | BookModel) {
