@@ -20,6 +20,7 @@ import { selectAllBooks } from '@book-co/shared-state-books';
 interface State {
   sortOrder: BookSortOrder;
   sortProp: BookSortProp;
+  isOnSmallDevice: boolean;
 }
 
 @Injectable()
@@ -32,12 +33,18 @@ export class BooksListStore extends ComponentStore<State> {
     this.store.select(selectAllBooks),
     (sortOrder, sortProp, books) => sortBooks(sortOrder, sortProp, books)
   );
+  isOnSmallDevice$ = this.select((state) => state.isOnSmallDevice);
 
   constructor(readonly store: Store, breakpointObserver: BreakpointObserver) {
     super({
       sortOrder: 'asc',
       sortProp: 'name',
+      isOnSmallDevice: false,
     });
+
+    this.observeLayoutChanges(
+      breakpointObserver.observe([Breakpoints.XSmall, Breakpoints.Small])
+    );
   }
 
   setSortOrder(sortOrder: BookSortOrder) {
@@ -55,4 +62,13 @@ export class BooksListStore extends ComponentStore<State> {
   onDeleteBook(book: BookModel) {
     this.store.dispatch(BooksPageActions.deleteBook({ bookId: book.id }));
   }
+
+  observeLayoutChanges = this.effect(
+    (breakpointState: Observable<BreakpointState>) => {
+      return breakpointState.pipe(
+        map((state) => state.matches),
+        tap((isOnSmallDevice) => this.patchState({ isOnSmallDevice }))
+      );
+    }
+  );
 }
