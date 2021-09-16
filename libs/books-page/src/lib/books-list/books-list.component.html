@@ -33,13 +33,13 @@
 
   <mat-card-content>
     <mat-list>
-      <mat-list-item *ngFor="let book of books">
+      <mat-list-item *ngFor="let book of booksListStore.sortedBooks$ | async">
         <h3 mat-line>{{ book.name }}</h3>
         <p mat-line>{{ book.earnings | currency }}</p>
         <bco-book-actions
           [isOnSmallDevice]="false"
-          (select)="select.emit(book)"
-          (delete)="delete.emit(book)"
+          (select)="booksListStore.onSelectBook(book)"
+          (delete)="booksListStore.onDeleteBook(book)"
         ></bco-book-actions>
       </mat-list-item>
     </mat-list>
