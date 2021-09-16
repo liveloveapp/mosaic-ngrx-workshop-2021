@@ -23,6 +23,19 @@ interface State {
 }
 
 @Injectable()
-export class BooksListStore {
-  constructor(readonly store: Store, breakpointObserver: BreakpointObserver) {}
+export class BooksListStore extends ComponentStore<State> {
+  sortOrder$ = this.select((state) => state.sortOrder);
+
+  constructor(readonly store: Store, breakpointObserver: BreakpointObserver) {
+    super({
+      sortOrder: 'asc',
+      sortProp: 'name',
+    });
+  }
+
+  setSortOrder(order: BookSortOrder) {
+    this.patchState({
+      sortOrder: order,
+    });
+  }
 }

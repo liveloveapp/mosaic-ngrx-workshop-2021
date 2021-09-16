@@ -5,8 +5,8 @@
     </mat-card-title>
 
     <mat-button-toggle-group
-      [value]="'name'"
-      (change)="($event.value)"
+      [value]="booksListStore.sortOrder$ | async"
+      (change)="booksListStore.setSortOrder($event.value)"
       aria-label="Sort By"
     >
       <mat-button-toggle value="name">
