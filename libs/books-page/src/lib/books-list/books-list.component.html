@@ -37,7 +37,7 @@
         <h3 mat-line>{{ book.name }}</h3>
         <p mat-line>{{ book.earnings | currency }}</p>
         <bco-book-actions
-          [isOnSmallDevice]="false"
+          [isOnSmallDevice]="booksListStore.isOnSmallDevice$ | async"
           (select)="booksListStore.onSelectBook(book)"
           (delete)="booksListStore.onDeleteBook(book)"
         ></bco-book-actions>
