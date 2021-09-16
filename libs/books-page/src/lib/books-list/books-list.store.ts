@@ -26,6 +26,12 @@ interface State {
 export class BooksListStore extends ComponentStore<State> {
   sortOrder$ = this.select((state) => state.sortOrder);
   sortProp$ = this.select((state) => state.sortProp);
+  sortedBooks$ = this.select(
+    this.sortOrder$,
+    this.sortProp$,
+    this.store.select(selectAllBooks),
+    (sortOrder, sortProp, books) => sortBooks(sortOrder, sortProp, books)
+  );
 
   constructor(readonly store: Store, breakpointObserver: BreakpointObserver) {
     super({
@@ -40,5 +46,13 @@ export class BooksListStore extends ComponentStore<State> {
 
   setSortProp(sortProp: BookSortProp) {
     this.patchState({ sortProp });
+  }
+
+  onSelectBook(book: BookModel) {
+    this.store.dispatch(BooksPageActions.selectBook({ bookId: book.id }));
+  }
+
+  onDeleteBook(book: BookModel) {
+    this.store.dispatch(BooksPageActions.deleteBook({ bookId: book.id }));
   }
 }
