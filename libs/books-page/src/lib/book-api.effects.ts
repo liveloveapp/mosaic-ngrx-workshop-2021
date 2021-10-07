@@ -1,8 +1,15 @@
 import { Injectable } from '@angular/core';
 import { createEffect, Actions, ofType } from '@ngrx/effects';
-import { mergeMap, map, exhaustMap, concatMap } from 'rxjs/operators';
+import {
+  mergeMap,
+  map,
+  exhaustMap,
+  concatMap,
+  catchError,
+} from 'rxjs/operators';
 import { BooksService } from '@book-co/shared-services';
 import { BooksPageActions, BooksApiActions } from '@book-co/books-page/actions';
+import { of } from 'rxjs';
 
 @Injectable()
 export class BooksApiEffects {
