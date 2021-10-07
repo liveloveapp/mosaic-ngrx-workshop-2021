@@ -6,6 +6,11 @@ export const booksLoaded = createAction(
   props<{ books: BookModel[] }>()
 );
 
+export const booksLoadedFailure = createAction(
+  '[Books API] Books Loaded Failure',
+  props<{ error: Error }>()
+);
+
 export const bookCreated = createAction(
   '[Books API] Book Created',
   props<{ book: BookModel }>()

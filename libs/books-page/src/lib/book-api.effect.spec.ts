@@ -48,5 +48,15 @@ describe('Book API Effects', () => {
     expect(spy.getLastValue()).toEqual(outputAction);
   });
 
-  it('should handle errors when trying to load all of the books', () => {});
+  it('should handle errors when trying to load all of the books', () => {
+    const inputAction = BooksPageActions.enter();
+    const error = new Error('Failed to load books');
+    const outputAction = BooksApiActions.booksLoadedFailure({ error });
+    booksService.all.mockReturnValue(throwError(error));
+
+    actions$ = of(inputAction);
+    const spy = subscribeSpyTo(effects.loadBooks$);
+
+    expect(spy.getLastValue()).toEqual(outputAction);
+  });
 });
