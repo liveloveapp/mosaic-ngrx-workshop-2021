@@ -11,6 +11,7 @@ import { BooksApiEffects } from './book-api.effects';
 describe('Book API Effects', () => {
   let effects: BooksApiEffects;
   let booksService: { all: jest.Mock };
+  let actions$: Observable<Action>;
 
   const mockBook: BookModel = {
     id: 'mock-book-id',
@@ -28,6 +29,7 @@ describe('Book API Effects', () => {
             return { all: jest.fn() };
           },
         },
+        provideMockActions(() => actions$),
       ],
     });
 
@@ -35,7 +37,16 @@ describe('Book API Effects', () => {
     booksService = TestBed.inject(BooksService) as any;
   });
 
-  it('should handle loading all of the books when the user enters the books page', () => {});
+  it('should handle loading all of the books when the user enters the books page', () => {
+    const inputAction = BooksPageActions.enter();
+    const outputAction = BooksApiActions.booksLoaded({ books: [mockBook] });
+    booksService.all.mockReturnValue(of([mockBook]));
+
+    actions$ = of(inputAction);
+    const spy = subscribeSpyTo(effects.loadBooks$);
+
+    expect(spy.getLastValue()).toEqual(outputAction);
+  });
 
   it('should handle errors when trying to load all of the books', () => {});
 });
