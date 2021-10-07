@@ -23,9 +23,37 @@ describe('Books Reducer', () => {
     expect(books).toEqual([mockBook]);
   });
 
-  it('should store which book is actively selected', () => {});
+  it('should store which book is actively selected', () => {
+    const firstAction = BooksApiActions.bookCreated({ book: mockBook });
+    const secondAction = BooksPageActions.selectBook({ bookId: mockBook.id });
 
-  it('should clear the active book when the user re-enters the books page', () => {});
+    const state = [firstAction, secondAction].reduce(reducer, initialState);
+    const activeBook = selectActiveBook(state);
 
-  it('should remove a book from the collection when it is deleted with the API', () => {});
+    expect(activeBook).toBe(mockBook);
+  });
+
+  it('should clear the active book when the user re-enters the books page', () => {
+    const firstAction = BooksApiActions.bookCreated({ book: mockBook });
+    const secondAction = BooksPageActions.selectBook({ bookId: mockBook.id });
+    const thirdAction = BooksPageActions.enter();
+
+    const state = [firstAction, secondAction, thirdAction].reduce(
+      reducer,
+      initialState
+    );
+    const activeBook = selectActiveBook(state);
+
+    expect(activeBook).toBeNull();
+  });
+
+  it('should remove a book from the collection when it is deleted with the API', () => {
+    const firstAction = BooksApiActions.bookCreated({ book: mockBook });
+    const secondAction = BooksApiActions.bookDeleted({ bookId: mockBook.id });
+
+    const state = [firstAction, secondAction].reduce(reducer, initialState);
+    const books = selectAll(state);
+
+    expect(books).toEqual([]);
+  });
 });
