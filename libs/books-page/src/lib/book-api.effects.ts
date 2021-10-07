@@ -19,9 +19,12 @@ export class BooksApiEffects {
     this.actions$.pipe(
       ofType(BooksPageActions.enter),
       exhaustMap(() =>
-        this.booksService
-          .all()
-          .pipe(map((books) => BooksApiActions.booksLoaded({ books })))
+        this.booksService.all().pipe(
+          map((books) => BooksApiActions.booksLoaded({ books })),
+          catchError((error) =>
+            of(BooksApiActions.booksLoadedFailure({ error }))
+          )
+        )
       )
     )
   );
