@@ -14,7 +14,14 @@ describe('Books Reducer', () => {
     earnings: '10000000',
   };
 
-  it('should add a book to the collection when a book is created with the API', () => {});
+  it('should add a book to the collection when a book is created with the API', () => {
+    const inputAction = BooksApiActions.bookCreated({ book: mockBook });
+
+    const state = reducer(initialState, inputAction);
+    const books = selectAll(state);
+
+    expect(books).toEqual([mockBook]);
+  });
 
   it('should store which book is actively selected', () => {});
 
