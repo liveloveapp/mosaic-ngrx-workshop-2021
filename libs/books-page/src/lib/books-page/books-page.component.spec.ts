@@ -23,17 +23,38 @@ describe('Books Page Component', () => {
       imports: [CommonModule],
       declarations: [BooksPageComponent],
       schemas: [NO_ERRORS_SCHEMA],
-      providers: [],
+      providers: [provideMockStore()],
     });
 
     await TestBed.compileComponents();
 
     fixture = TestBed.createComponent(BooksPageComponent);
+    mockStore = TestBed.inject(MockStore);
+    mockStore.dispatch = jest.fn();
   });
 
-  it('should pass the active book to the book detail component', () => {});
+  it('should pass the active book to the book detail component', () => {
+    const bookDetailComponent = fixture.debugElement.query(
+      By.css('bco-book-detail')
+    );
 
-  it('should pass the list of books to the books list component', () => {});
+    mockStore.overrideSelector(selectActiveBook, mockBook);
+    fixture.detectChanges();
+
+    expect(bookDetailComponent.properties.book).toBe(mockBook);
+  });
+
+  it('should pass the list of books to the books list component', () => {
+    const mockBooks = [mockBook];
+    const bookListComponent = fixture.debugElement.query(
+      By.css('bco-books-list')
+    );
+
+    mockStore.overrideSelector(selectAllBooks, mockBooks);
+    fixture.detectChanges();
+
+    expect(bookListComponent.properties.books).toBe(mockBooks);
+  });
 
   it('should dispatch a "select book" action when the user selects a book using the books list component', () => {});
 
