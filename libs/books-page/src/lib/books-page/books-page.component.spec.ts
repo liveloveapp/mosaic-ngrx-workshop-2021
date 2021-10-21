@@ -56,7 +56,25 @@ describe('Books Page Component', () => {
     expect(bookListComponent.properties.books).toBe(mockBooks);
   });
 
-  it('should dispatch a "select book" action when the user selects a book using the books list component', () => {});
+  it('should dispatch a "select book" action when the user selects a book using the books list component', () => {
+    const expectedAction = BooksPageActions.selectBook({ bookId: mockBook.id });
+    const booksListComponent = fixture.debugElement.query(
+      By.css('bco-books-list')
+    );
 
-  it('should dispatch a "clear selected book" action when the user hits cancel on the book detail component', () => {});
+    booksListComponent.triggerEventHandler('select', mockBook);
+
+    expect(mockStore.dispatch).toHaveBeenCalledWith(expectedAction);
+  });
+
+  it('should dispatch a "clear selected book" action when the user hits cancel on the book detail component', () => {
+    const expectedAction = BooksPageActions.clearSelectedBook();
+    const bookDetailComponent = fixture.debugElement.query(
+      By.css('bco-book-detail')
+    );
+
+    bookDetailComponent.triggerEventHandler('cancel', undefined);
+
+    expect(mockStore.dispatch).toHaveBeenCalledWith(expectedAction);
+  });
 });
